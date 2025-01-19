@@ -37,6 +37,7 @@ The application will be available at http://localhost:3000.
 
 ## Project Structure
 
+```
 fuzzy-frontend/
 ├── public/
 │   ├── index.html
@@ -44,6 +45,7 @@ fuzzy-frontend/
 ├── src/
 ├── .env
 ├── package.json
+```
 
 ### Usage
 - Open the application in your browser.
