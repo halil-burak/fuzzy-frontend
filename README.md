@@ -31,6 +31,21 @@ This is the frontend part of the Product Fuzzy App, a simple web application for
 The application will be available at http://localhost:3000.
 
 ## API Endpoints
--GET /api/products: Fetch all products
--GET /api/products/search?term={query}: Search for products by name
--GET /api/products/{id}: Fetch product details by ID
+- **GET /api/products: Fetch all products**
+- **GET /api/products/search?term={query}: Search for products by name**
+- **GET /api/products/{id}: Fetch product details by ID**
+
+## Project Structure
+
+fuzzy-frontend/
+├── public/
+│   ├── index.html
+│   ├── product-detail.html
+├── src/
+├── .env
+├── package.json
+
+### Usage
+- Open the application in your browser.
+- Use the search bar to search for products by name.
+- Click on a product to view its details.
