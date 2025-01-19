@@ -1,0 +1,47 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Detail</title>
+  </head>
+  <body>
+    <div id="product-detail">
+      <h1>Product Detail</h1>
+      <div id="product-info"></div>
+    </div>
+    <script>
+      async function fetchProductDetails(productId) {
+        try {
+          const response = await fetch(`http://localhost:8082/api/products/${productId}`);
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          const result = await response.json();
+          console.log('Product Details:', result.data); // Log the product details to verify the response
+          const product = result.data;
+          const productInfo = document.getElementById('product-info');
+          productInfo.innerHTML = `
+            <img src="${product.imageUrl}" alt="${product.name}" width="100" height="100">
+            <h2>${product.name}</h2>
+            <p>Category: ${product.category}</p>
+            <p>Description: ${product.description}</p>
+            <p>Price: $${product.price}</p>
+          `;
+        } catch (error) {
+          console.error('There has been a problem with your fetch operation:', error);
+        }
+      }
+
+      // Get the product ID from the URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get('id');
+
+      // Fetch and display the product details
+      if (productId) {
+        fetchProductDetails(productId);
+      } else {
+        console.error('Product ID not found in URL');
+      }
+    </script>
+  </body>
+</html>

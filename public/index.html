@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Toto App</title>
+  </head>
+  <body>
+    <div id="root">
+      <input type="text" id="search-bar" placeholder="Search for products..." />
+      <table>
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+    <script>
+      let timeout = null;
+
+      async function fetchProducts(query) {
+        try {
+          const response = await fetch(`http://localhost:8082/api/products?search=${query}`);
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          const result = await response.json();
+          console.log('Products:', result.data); // Log the products to verify the response
+          const products = result.data;
+          const tbody = document.querySelector('tbody');
+          tbody.innerHTML = ''; // Clear previous results
+          if (!tbody) {
+            console.error('Table body not found');
+            return;
+          }
+          products.forEach(product => {
+            const tr = document.createElement('tr');
+            tr.onclick = () => window.location = `/product-detail.html?id=${product.id}`;
+            tr.innerHTML = `
+              <td><img src="${product.imageUrl}" alt="${product.name}" width="50" height="50"></td>
+              <td>${product.name}</td>
+              <td>${product.category}</td>
+              <td>${product.price}</td>
+            `;
+            tbody.appendChild(tr);
+          });
+        } catch (error) {
+          console.error('There has been a problem with your fetch operation:', error);
+        }
+      }
+
+      async function searchProducts(query) {
+        try {
+          const response = await fetch(`http://localhost:8082/api/products/search?term=${query}`);
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          const result = await response.json();
+          console.log('Search Results:', result.data); // Log the search results to verify the response
+          const products = result.data;
+          const tbody = document.querySelector('tbody');
+          tbody.innerHTML = ''; // Clear previous results
+          if (!tbody) {
+            console.error('Table body not found');
+            return;
+          }
+          products.forEach(product => {
+            const tr = document.createElement('tr');
+            tr.onclick = () => window.location = `/product-detail.html?id=${product.id}`;
+            tr.innerHTML = `
+              <td><img src="${product.imageUrl}" alt="${product.name}" width="50" height="50"></td>
+              <td>${product.name}</td>
+              <td>${product.category}</td>
+              <td>${product.price}</td>
+            `;
+            tbody.appendChild(tr);
+          });
+        } catch (error) {
+          console.error('There has been a problem with your fetch operation:', error);
+        }
+      }
+
+      document.getElementById('search-bar').addEventListener('input', (event) => {
+        clearTimeout(timeout);
+        const query = event.target.value;
+        timeout = setTimeout(() => {
+          if (query) {
+            searchProducts(query);
+          } else {
+            fetchProducts();
+          }
+        }, 300); // Throttle requests by 300ms
+      });
+
+      // Initial fetch to display all products
+      fetchProducts('');
+    </script>
+  </body>
+</html>
