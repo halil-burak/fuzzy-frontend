@@ -26,7 +26,7 @@
 
       async function fetchProducts(query) {
         try {
-          const response = await fetch(`http://localhost:8082/api/products?search=${query}`);
+          const response = await fetch(`http://localhost:8082/api/products`);
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
@@ -99,7 +99,7 @@
       });
 
       // Initial fetch to display all products
-      fetchProducts('');
+      fetchProducts();
     </script>
   </body>
 </html>
