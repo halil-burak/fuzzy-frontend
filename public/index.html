@@ -20,13 +20,23 @@
         <tbody>
         </tbody>
       </table>
+      <div id="pagination-controls">
+        <button id="prev-page">Previous</button>
+        <span id="page-info">Page 1</span>
+        <button id="next-page">Next</button>
+      </div>
+      <div>
+        <button onclick="window.location = '/create-product.html'">Click here to add a new product</button>
+      </div>
     </div>
     <script>
       let timeout = null;
+      let currentPage = 0;
+      const pageSize = 10;
 
-      async function fetchProducts(query) {
+      async function fetchProducts(page = 0) {
         try {
-          const response = await fetch(`http://localhost:8082/api/products`);
+          const response = await fetch(`http://localhost:8082/api/products?page=${page}&size=${pageSize}`);
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
@@ -50,6 +60,10 @@
             `;
             tbody.appendChild(tr);
           });
+
+          document.getElementById('page-info').textContent = `Page ${page + 1}`;
+          document.getElementById('prev-page').disabled = page === 0;
+          document.getElementById('next-page').disabled = products.length < pageSize;
         } catch (error) {
           console.error('There has been a problem with your fetch operation:', error);
         }
@@ -98,8 +112,21 @@
         }, 900); // Throttle requests by 900ms
       });
 
+      document.getElementById('prev-page').addEventListener('click', () => {
+        currentPage -= 1;
+        fetchProducts(currentPage);
+      });
+
+      document.getElementById('next-page').addEventListener('click', () => {
+        currentPage += 1;
+        fetchProducts(currentPage);
+      });
+
       // Initial fetch to display all products
       fetchProducts();
     </script>
+    <div>
+        <button onclick="window.location = '/'">RETURN TO HOME PAGE</button>
+    </div>
   </body>
 </html>

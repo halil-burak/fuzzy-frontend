@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Success</title>
+    </head>
+    <body>
+        <div>
+            <text id="status"></text>
+            <script>
+                const urlParams = new URLSearchParams(window.location.search);
+                const productName = urlParams.get('name');
+    
+                if (productName) {
+                    console.log(`Product ${productName} created successfully!`);
+                    document.getElementById('status').innerText = `Product ${productName} created successfully!`;
+                    document.getElementById('status').style.color = 'green';
+                } else {
+                    console.error('Not able to save the product.');
+                    document.getElementById('status').innerText = 'Not able to save the product.';
+                    document.getElementById('status').style.color = 'red';
+                }
+            </script>
+        </div>
+        <div>
+            <button onclick="window.location = '/'">HOME</button>
+        </div>
+    </body>
+</html>
